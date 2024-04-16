@@ -1,4 +1,4 @@
-import prisma from "~/lib/primsa";
+import prisma from "~/lib/prisma";
 import { userSchema } from "~/lib/yup";
 import { verify } from "argon2";
 import { v4 } from "uuid";
