@@ -1,11 +1,11 @@
 import prisma from "~/lib/prisma";
-import { userSchema } from "~/lib/yup";
+import { loginSchema } from "~/lib/yup";
 import { verify } from "argon2";
 import { v4 } from "uuid";
 
 export default defineEventHandler(async (event) => {
   const body = await readValidatedBody(event, async (body) => {
-    return await userSchema.validate(body).catch((error) => {
+    return await loginSchema.validate(body).catch((error) => {
       throw createError({
         statusCode: 400,
         statusMessage: error.errors,

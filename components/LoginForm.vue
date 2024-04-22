@@ -11,11 +11,11 @@
 </template>
 
 <script lang="ts" setup>
-import { userSchema } from '~/lib/yup';
+import { loginSchema } from '~/lib/yup';
 import { useForm } from 'vee-validate';
 
 const { values, errors, meta, defineField } = useForm({
-  validationSchema: userSchema
+  validationSchema: loginSchema
 });
 
 const [email, emailProps] = defineField("email")
