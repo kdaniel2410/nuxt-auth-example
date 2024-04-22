@@ -7,6 +7,6 @@
 
 <script lang="ts" setup>
 definePageMeta({
-  middleware: ["unauthenticated"]
+  middleware: ["guest-only"]
 })
 </script>
