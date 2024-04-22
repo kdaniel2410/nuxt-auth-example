@@ -13,13 +13,6 @@ export default defineEventHandler(async (event) => {
     });
   });
 
-  if (!body.email || !body.password) {
-    throw createError({
-      statusCode: 400,
-      statusMessage: "Email and Password required",
-    });
-  }
-
   const conflict = await prisma.user.findUnique({
     where: {
       email: body.email,
