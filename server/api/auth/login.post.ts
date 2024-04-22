@@ -22,7 +22,7 @@ export default defineEventHandler(async (event) => {
   if (!user || !(await verify(user.passwordHash, body.password))) {
     throw createError({
       statusCode: 401,
-      statusMessage: "Unauthorized",
+      statusMessage: "Login not found",
     });
   }
 

@@ -1,16 +1,16 @@
 <template>
   <div class="flex flex-col gap-1">
-    <div>
-      <PMessage severity="error" v-for="message of messages">{{ message }}</PMessage>
-    </div>
     <label class="my-auto" for="email">Email Address</label>
-    <PInputText class="grow" v-model="email" v-bind="emailProps" />
+    <PInputText type="text" class="grow" v-model="email" v-bind="emailProps" />
     <label class="my-auto" for="password">Password</label>
     <PPassword inputClass="grow" v-model="password" v-bind="passwordProps" />
     <label class="my-auto" for="confirmPassword">Confirm Password</label>
     <PPassword inputClass="grow" :feedback="false" v-model="confirmPassword" v-bind="confirmPasswordProps" />
+    <div>
+      <PMessage severity="error" v-for="error of Object.values(errors)">{{ error }}</PMessage>
+    </div>
     <div class="flex justify-center">
-      <PButton :disabled="!meta.dirty" @click="register">Register</PButton>
+      <PButton :disabled="!meta.dirty" @click="onSubmit">Register</PButton>
     </div>
   </div>
 </template>
@@ -19,9 +19,7 @@
 import { registerSchema } from '~/lib/yup';
 import { useForm } from 'vee-validate';
 
-const messages = ref<string[]>([])
-
-const { values, errors, meta, defineField } = useForm({
+const { errors, meta, defineField, handleSubmit } = useForm({
   validationSchema: registerSchema
 });
 
@@ -29,20 +27,13 @@ const [email, emailProps] = defineField("email")
 const [password, passwordProps] = defineField("password")
 const [confirmPassword, confirmPasswordProps] = defineField("confirmPassword")
 
-const register = async () => {
-  if (meta.value.valid) {
-    await $fetch("/api/auth/register", {
-      method: "POST",
-      body: values,
-    }).catch((error) => {
-      messages.value.push(error.statusMessage)
-    })
-    navigateTo("/protected")
-  } else {
-    for (const error of Object.values(errors.value)) {
-      if (!error) continue
-      messages.value.push(error)
-    }
-  }
-}
+const onSubmit = handleSubmit(async (values, { setFieldError }) => {
+  await $fetch("/api/auth/register", {
+    method: "POST",
+    body: values,
+  }).catch((error) => {
+    setFieldError("email", error.data.statusMessage)
+  })
+  navigateTo("/protected")
+})
 </script>
