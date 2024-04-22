@@ -29,7 +29,7 @@ export default defineEventHandler(async (event) => {
   if (conflict) {
     throw createError({
       statusCode: 400,
-      statusMessage: "Email Address is already in use",
+      statusMessage: "Email is already in use",
     });
   }
 
