@@ -1,5 +1,5 @@
 <template>
-  <div class="card">
+  <div>
     <PMenubar :model="items">
       <template #item="{ item, props, hasSubmenu }">
         <router-link v-if="item.route" v-slot="{ href, navigate }" :to="item.route" custom>
@@ -15,6 +15,7 @@
         </a>
       </template>
     </PMenubar>
+    <slot />
   </div>
 </template>
 
