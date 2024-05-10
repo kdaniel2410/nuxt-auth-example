@@ -1,7 +1,7 @@
 import prisma from "~/lib/prisma";
 import { loginSchema } from "~/lib/yup";
 import { verify } from "argon2";
-import { v4 } from "uuid";
+import { randomUUID } from "crypto"
 
 export default defineEventHandler(async (event) => {
   const body = await readValidatedBody(event, async (body) => {
@@ -27,7 +27,7 @@ export default defineEventHandler(async (event) => {
   }
 
   const session = { id: user.id, email: user.email };
-  const uuid = v4();
+  const uuid = randomUUID()
   await useStorage("sessions").setItem(uuid, session);
   setCookie(event, "session", uuid);
   return "Logged in";
